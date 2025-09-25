@@ -360,3 +360,5 @@ compile_commands.json
 *.rej
 *.out
 build
+
+*.txt
