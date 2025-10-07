@@ -41,17 +41,29 @@ firmware("use-after-free-vulnerability")
 on_run(function (target)
     local targetfile = target:targetfile()
     local simulator = "/cheriot-tools/bin/mpact_cheriot"
-    local rundir = "./runs/run_" .. os.date("%Y%m%d_%H%M%S")
+    local rundir = "../../submit/exercises-c++/06.use-after-free/runs/run_" .. os.date("%Y%m%d_%H%M%S")
+    os.mkdir(rundir)
 
     -- check debug option
     local args = {"--output_dir=" .. rundir}
     if get_config("debug_run") == true then
         table.insert(args, "-i")
+        
         print("Running in debug mode...")
+        local log_file = "../../submit/exercises-c++/06.use-after-free/debug"
+        local log_time = os.date("%Y-%m-%d %H:%M:%S")
+        local log_line = string.format("debug_time: %s\n", log_time)
+
+        local f = io.open(log_file, "a")
+        if f then
+            f:write(log_line)
+            f:close()
+        end
+
+        
     else
         print("Running in normal mode...")
     end
     table.insert(args, targetfile)
-    os.mkdir(rundir)
     os.execv(simulator, args)
 end)

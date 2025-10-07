@@ -17,19 +17,19 @@ option("debug_run")
     set_showmenu(true)
     set_description("Run simulator in debug mode (-i)")
 
-compartment("use-after-free")
+compartment("double-free")
     -- memcpy
     add_deps("freestanding", "debug", "unwind_error_handler")
-    add_files("use-after-free.cc")
+    add_files("double-free.cc")
 
 -- Firmware image for the example.
-firmware("use-after-free-vulnerability")
-    add_deps("freestanding", "debug", "stdio", "use-after-free")
+firmware("double-free-vulnerability")
+    add_deps("freestanding", "debug", "stdio", "double-free")
     on_load(function(target)
         target:values_set("board", "$(board)")
         target:values_set("threads", {
             {
-                compartment = "use-after-free",
+                compartment = "double-free",
                 priority = 1,
                 entry_point = "vuln1",
                 stack_size = 0x400,
@@ -41,17 +41,29 @@ firmware("use-after-free-vulnerability")
 on_run(function (target)
     local targetfile = target:targetfile()
     local simulator = "/cheriot-tools/bin/mpact_cheriot"
-    local rundir = "./runs/run_" .. os.date("%Y%m%d_%H%M%S")
+    local rundir = "../../submit/exercises-c++/07.double-free/runs/run_" .. os.date("%Y%m%d_%H%M%S")
+    os.mkdir(rundir)
 
     -- check debug option
     local args = {"--output_dir=" .. rundir}
     if get_config("debug_run") == true then
         table.insert(args, "-i")
+        
         print("Running in debug mode...")
+        local log_file = "../../submit/exercises-c++/07.double-free/debug"
+        local log_time = os.date("%Y-%m-%d %H:%M:%S")
+        local log_line = string.format("debug_time: %s\n", log_time)
+
+        local f = io.open(log_file, "a")
+        if f then
+            f:write(log_line)
+            f:close()
+        end
+
+        
     else
         print("Running in normal mode...")
     end
     table.insert(args, targetfile)
-    os.mkdir(rundir)
     os.execv(simulator, args)
 end)
