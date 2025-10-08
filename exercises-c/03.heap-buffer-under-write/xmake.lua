@@ -42,7 +42,7 @@ firmware("heap-buffer-under-write-vulnerability")
 on_run(function (target)
     local targetfile = target:targetfile()
     local simulator = "/cheriot-tools/bin/mpact_cheriot"
-    local rundir = "../../submit/exercises-c/03.heap-buffer-under-write/runs/run_" .. os.date("%Y%m%d_%H%M%S")
+    local rundir = "../../submit-cheriot/exercises-c/03.heap-buffer-under-write/runs/run_" .. os.date("%Y%m%d_%H%M%S")
     os.mkdir(rundir)
 
     -- check debug option
@@ -51,7 +51,7 @@ on_run(function (target)
         table.insert(args, "-i")
         
         print("Running in debug mode...")
-        local log_file = "../../submit/exercises-c/03.heap-buffer-under-write/debug"
+        local log_file = "../../submit-cheriot/exercises-c/03.heap-buffer-under-write/debug"
         local log_time = os.date("%Y-%m-%d %H:%M:%S")
         local log_line = string.format("debug_time: %s\n", log_time)
 
