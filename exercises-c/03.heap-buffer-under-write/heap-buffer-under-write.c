@@ -19,7 +19,7 @@ __cheri_compartment("heap-buffer-under-write") int vuln1(void)
     CHERIOT_DEBUG_LOG(DEBUG_CONTEXT, "Attempting under-write arr[{}] = 999 ...", index);
 
     if (index < 0 || index >= ukuran){
-        CHERIOT_DEBUG_LOG(DEBUG_CONTEXT, "Index: {} is out of bounds.", index, ukuran);
+        CHERIOT_DEBUG_LOG(DEBUG_CONTEXT, "Index: {} is out of bounds.", index);
     }
     else{
         arr[index] = 999;

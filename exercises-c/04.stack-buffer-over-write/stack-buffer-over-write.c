@@ -39,7 +39,7 @@ __cheri_compartment("stack-buffer-over-write") int vuln1(void)
         write_buf(lower, index);
         CHERIOT_DEBUG_LOG(DEBUG_CONTEXT, "lower[{}] = {}", index, lower[index]);
     }
-
+    CHERIOT_DEBUG_LOG(DEBUG_CONTEXT, "This line may not be reached if the program crashes.");
 
     return 0;
 }

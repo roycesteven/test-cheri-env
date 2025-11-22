@@ -34,6 +34,7 @@ __cheri_compartment("use-after-free") int vuln1()
         DEBUG_CONTEXT,
         "Use-after-free prevented: pointer is NULL after free.");
     }
+        CHERIOT_DEBUG_LOG(DEBUG_CONTEXT, "This line may not be reached if the program crashes.");
 
 
     

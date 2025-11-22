@@ -26,6 +26,7 @@ __cheri_compartment("double-free") int vuln1(void)
     if (rc2 == -EINVAL){
         CHERIOT_DEBUG_LOG(DEBUG_CONTEXT, "Second free rejected: EINVAL (double free detected).");
     }
+    CHERIOT_DEBUG_LOG(DEBUG_CONTEXT, "This line may not be reached if the program crashes.");
 
     return 0;
 }
