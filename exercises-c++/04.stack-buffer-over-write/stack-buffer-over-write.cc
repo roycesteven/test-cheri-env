@@ -3,6 +3,7 @@
 #include <compartment.h>
 #include <debug.hh>
 #include <assert.h>
+#include <stddef.h>
 #include <unwind.h>
 #include <fail-simulator-on-error.h>
 
@@ -27,7 +28,15 @@ int __cheri_compartment("stack-buffer-over-write") vuln1()
     assert((uintptr_t)upper == (uintptr_t)&lower[sizeof(lower)]);
     upper[0] = 'a';
     Debug::log("upper[0] = {}", upper[0]);
-    write_buf(lower, sizeof(lower));
-    Debug::log("upper[0] = {}", upper[0]);
+
+    size_t index = sizeof(lower);
+    if(index >= sizeof(lower) ){
+        Debug::log("Index: {} is out of bounds for array of size {}.", index, sizeof(lower));
+    }
+    else{
+        write_buf(lower, sizeof(lower));
+        Debug::log("lower[0] = {}", lower[0]);
+    }
+    Debug::log( "This line may not be reached if the program crashes.");
     return 0;
 }

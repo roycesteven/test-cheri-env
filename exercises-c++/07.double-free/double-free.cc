@@ -24,6 +24,7 @@ __cheri_compartment("double-free") int vuln1(void)
     if (rc2 == -EINVAL){
         Debug::log( "Second free rejected: EINVAL (double free detected).");
     }
+    Debug::log("Completed without crashing");
 
     return 0;
 }
