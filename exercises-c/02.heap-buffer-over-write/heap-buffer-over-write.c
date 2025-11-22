@@ -10,7 +10,8 @@
 
 __cheri_compartment("heap-buffer-over-write") int vuln1(void)
 {
-    int* arr = (int*)malloc(3 * sizeof(int));
+    int ukuran =3;
+    int* arr = (int*)malloc(ukuran * sizeof(int));
     if (arr == NULL) { return 0; }
 
     arr[0] = 1;
@@ -18,10 +19,19 @@ __cheri_compartment("heap-buffer-over-write") int vuln1(void)
     arr[2] = 3;
 
     CHERIOT_DEBUG_LOG(DEBUG_CONTEXT, "Testing Buffer Over-write (C)...");
+    int index = 3;
 
-    CHERIOT_DEBUG_LOG(DEBUG_CONTEXT, "Attempting to write arr[4]...");
-    arr[4] = 999; // Writing outside allocated memory
-    CHERIOT_DEBUG_LOG(DEBUG_CONTEXT, "arr[4]: {} (this should not be printed).", arr[4]);
+    CHERIOT_DEBUG_LOG(DEBUG_CONTEXT, "Attempting to write arr[{}]...", index);
+
+
+
+    if (index < 0 || index >= ukuran){
+        CHERIOT_DEBUG_LOG(DEBUG_CONTEXT, "Index: {} is out of bounds for array of size {}.", index, ukuran);
+    }
+    else{
+        arr[index] = 999;
+        CHERIOT_DEBUG_LOG(DEBUG_CONTEXT, "Value: {}", arr[index]);
+    }
 
     free(arr);
     CHERIOT_DEBUG_LOG(DEBUG_CONTEXT, "This line may not be reached if the program crashes.");

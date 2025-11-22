@@ -27,13 +27,19 @@ __cheri_compartment("stack-buffer-over-write") int vuln1(void)
     
     /* Assert that these get placed how we expect */
     assert((ptraddr_t)upper == (ptraddr_t)&lower[sizeof(lower)]);
+    
 
     upper[0] = 'a';
     CHERIOT_DEBUG_LOG(DEBUG_CONTEXT, "upper[0] = {}", upper[0]);
+    size_t index = sizeof(lower);
+    if(index >= sizeof(lower)){
+        CHERIOT_DEBUG_LOG(DEBUG_CONTEXT, "Index: {} is out of bounds for array of size {}.", index, sizeof(lower));
+    }
+    else{
+        write_buf(lower, index);
+        CHERIOT_DEBUG_LOG(DEBUG_CONTEXT, "lower[{}] = {}", index, lower[index]);
+    }
 
-    write_buf(lower, sizeof(lower));
-
-    CHERIOT_DEBUG_LOG(DEBUG_CONTEXT, "upper[0] = {}", upper[0]);
 
     return 0;
 }
