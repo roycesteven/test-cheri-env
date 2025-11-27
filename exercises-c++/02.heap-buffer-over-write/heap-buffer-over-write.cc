@@ -3,6 +3,7 @@
 #include <compartment.h>
 #include <debug.hh>
 #include <unwind.h>
+#include <fail-simulator-on-error.h>
 
 using Debug = ConditionalDebug<true, "Heap Buffer Over Write Compartment">;
 
